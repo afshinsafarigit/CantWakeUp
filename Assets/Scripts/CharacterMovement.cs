@@ -1,13 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CharacterMovement : MonoBehaviour
 {
     // Camera, duh
     public Camera head;
+    // Player reticule
+    public Image reticule;
     // Interact distance
     public float maxDistance;
+    // Variable for interactable object
     public GameObject interactable;
     // Character movement speed
     public int speed;
@@ -67,12 +71,21 @@ public class CharacterMovement : MonoBehaviour
             {
                 // Store hit object
                 interactable = hit.transform.gameObject;
+                // Set reticule color to red
+                reticule.color = Color.red;
+            }
+            else
+            {
+                // Set reticule color to black
+                reticule.color = Color.black;
             }
         }
         else
         {
             // Clear any previous hit objects
             interactable = null;
+            // Set reticule color to black
+            reticule.color = Color.black;
         }
 
         // Interaction keypresses //
