@@ -6,6 +6,9 @@ public class CharacterMovement : MonoBehaviour
 {
     // Camera, duh
     public Camera head;
+    // Interact distance
+    public float maxDistance;
+    public GameObject interactable;
     // Character movement speed
     public int speed;
     // Mouse sensitivity
@@ -52,21 +55,61 @@ public class CharacterMovement : MonoBehaviour
         // Rotate only the camera in vertical rotation (so that the character model doesn't tilt)
         head.transform.localEulerAngles = (new Vector3(-rotationY, head.transform.localEulerAngles.y, 0));
 
+        // Camera raycast
+        // Get interactable objects
+        // Variable for the object hit by raycast
+        RaycastHit hit;
+        // Check if raycast hits anything
+        if (Physics.Raycast(head.transform.position, head.transform.forward, out hit, maxDistance))
+        {
+            // Check if the hit object has the tag "Interactable"
+            if (hit.collider.CompareTag("Interactable"))
+            {
+                // Store hit object
+                interactable = hit.transform.gameObject;
+            }
+        }
+        else
+        {
+            // Clear any previous hit objects
+            interactable = null;
+        }
+
+        // Interaction keypresses //
+
+        // Hide and lock the cursor
+
+        // Check if the key F is pressed
         if (Input.GetKeyDown(KeyCode.F))
         {
+            // Check if mouse is locked already
             if (mouseLocked)
             {
+                // Set cursor visible
                 Cursor.visible = true;
+                // Set cursor free
                 Cursor.lockState = CursorLockMode.None;
+                // Set mouseLocked boolean to false
                 mouseLocked = false;
             }
             else
             {
+                // Set cursor invisible
                 Cursor.visible = false;
+                // Set cursor locked to the center of the game window
                 Cursor.lockState = CursorLockMode.Locked;
+                // Set mouseLocked boolean to true
                 mouseLocked = true;
             }
         }
 
+        // Interact with interactable objects
+
+        // Check if there is an object to interact with and if left mouse button is clicked
+        if (interactable && Input.GetMouseButtonDown(0))
+        {
+            // Tell the interactable object to do something
+            interactable.SendMessage("Interact");
+        }
     }
 }
