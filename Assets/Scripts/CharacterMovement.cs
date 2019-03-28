@@ -9,12 +9,35 @@ public class CharacterMovement : MonoBehaviour
     public Camera head;
     // Player reticule
     public Image reticule;
+    // Player collider
+    public CapsuleCollider playerCollider;
     // Interact distance
     public float maxDistance;
     // Variable for interactable object
     public GameObject interactable;
-    // Character movement speed
-    public int speed;
+    // Standing movement speed
+    public float standSpeed;
+    // Crouching movement speed
+    public float crouchSpeed;
+    // Standing height
+    public float standHeight;
+    // Crouching height
+    public float crouchHeight;
+    // Standing up speed (0 - 1)
+    public float standUpSpeed;
+    // Crouching down speed (0 - 1)
+    public float crouchDownSpeed;
+    // Current movement speed
+    private float speed;
+    // Current height
+    private float height;
+    // Target height
+    private float targetHeight;
+    // Stand/Crouch transition speed
+    private float standCrouchSpeed;
+
+    // Camera stuff
+
     // Mouse sensitivity
     public float sensitivity;
     // Lowest angle the camera will rotate to in vertical axis
@@ -29,6 +52,7 @@ public class CharacterMovement : MonoBehaviour
     private void Start()
     {
         mouseLocked = false;
+        speed = standSpeed;
     }
 
     void Update()
@@ -43,6 +67,29 @@ public class CharacterMovement : MonoBehaviour
         if (Input.GetAxis("Horizontal") != 0)
         {
             transform.Translate(new Vector3(Input.GetAxis("Horizontal") * speed * Time.deltaTime, 0, 0));
+        }
+
+        if (Input.GetKeyDown(KeyCode.LeftControl))
+        {
+            speed = crouchSpeed;
+            targetHeight = crouchHeight;
+            playerCollider.height = crouchHeight + 0.05f;
+            playerCollider.center = new Vector3(0, (crouchHeight + 0.05f) / 2, 0);
+            standCrouchSpeed = crouchDownSpeed;
+        }
+        if (Input.GetKeyUp(KeyCode.LeftControl))
+        {
+            speed = standSpeed;
+            targetHeight = standHeight;
+            playerCollider.height = standHeight + 0.05f;
+            playerCollider.center = new Vector3(0, (standHeight + 0.05f) / 2, 0);
+            standCrouchSpeed = standUpSpeed;
+        }
+
+        if (height != targetHeight)
+        {
+            height = Mathf.Lerp(head.transform.localPosition.y, targetHeight, standCrouchSpeed);
+            head.transform.localPosition = new Vector3(0, height, 0);
         }
 
         // Viewpoint rotation
