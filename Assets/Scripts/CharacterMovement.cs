@@ -17,6 +17,12 @@ public class CharacterMovement : MonoBehaviour
     // Variables to house rotation calculations
     private float rotationX;
     private float rotationY;
+    private bool mouseLocked;
+
+    private void Start()
+    {
+        mouseLocked = false;
+    }
 
     void Update()
     {
@@ -45,6 +51,22 @@ public class CharacterMovement : MonoBehaviour
         transform.localEulerAngles = new Vector3(0, rotationX, 0);
         // Rotate only the camera in vertical rotation (so that the character model doesn't tilt)
         head.transform.localEulerAngles = (new Vector3(-rotationY, head.transform.localEulerAngles.y, 0));
+
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            if (mouseLocked)
+            {
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+                mouseLocked = false;
+            }
+            else
+            {
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
+                mouseLocked = true;
+            }
+        }
 
     }
 }
