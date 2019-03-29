@@ -69,26 +69,41 @@ public class CharacterMovement : MonoBehaviour
             transform.Translate(new Vector3(Input.GetAxis("Horizontal") * speed * Time.deltaTime, 0, 0));
         }
 
+        // Crouch down
         if (Input.GetKeyDown(KeyCode.LeftControl))
         {
+            // Change movement speed to crouch speed
             speed = crouchSpeed;
+            // Set the target camera height to crouch height
             targetHeight = crouchHeight;
+            // Make the collider smaller
             playerCollider.height = crouchHeight + 0.05f;
+            // Move the collider to floor level
             playerCollider.center = new Vector3(0, (crouchHeight + 0.05f) / 2, 0);
+            // Set stand/crouch transition speed to crouchDown
             standCrouchSpeed = crouchDownSpeed;
         }
+        // Stand up
         if (Input.GetKeyUp(KeyCode.LeftControl))
         {
+            // Set movement speed to stand speed
             speed = standSpeed;
+            // Set the target camera height to stand height
             targetHeight = standHeight;
+            // Make the collider larger
             playerCollider.height = standHeight + 0.05f;
+            // Move the collider to floor level
             playerCollider.center = new Vector3(0, (standHeight + 0.05f) / 2, 0);
+            // Set stand/crouch transition speed to standUp
             standCrouchSpeed = standUpSpeed;
         }
-
+        // Stand/crouch camera height transition
+        // Check if the current camera height is different from the target height
         if (height != targetHeight)
         {
+            // Calculate new height for each frame
             height = Mathf.Lerp(head.transform.localPosition.y, targetHeight, standCrouchSpeed);
+            // Set the camera height each frame
             head.transform.localPosition = new Vector3(0, height, 0);
         }
 
