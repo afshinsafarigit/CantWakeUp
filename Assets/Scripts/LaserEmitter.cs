@@ -51,13 +51,14 @@ public class LaserEmitter : MonoBehaviour
                 }
                 else if (target)
                 {
-                    hit.transform.tag = "";
+                    hit.transform.tag = "Untagged";
                     target.GetComponent<Renderer>().enabled = false;
                     target = null;
                 }
             }
             else if (target)
             {
+                hit.transform.tag = "Untagged";
                 target.GetComponent<Renderer>().enabled = false;
                 target = null;
             }
