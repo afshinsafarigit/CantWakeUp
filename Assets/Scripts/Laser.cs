@@ -5,5 +5,4 @@ using UnityEngine;
 public class Laser : MonoBehaviour
 {
     public Vector3 hitPoint;
-
 }
