@@ -5095,6 +5095,8 @@ MonoBehaviour:
 
     Hold left control to crouch
 
+    Press R to rest the current scene
+
     Press P to toggle pause and mouse lock
 
     Left click on an interactable object to interact with it

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class CharacterMovement : MonoBehaviour
 {
@@ -205,5 +206,14 @@ public class CharacterMovement : MonoBehaviour
                 pauseScreen.SetActive(true);
             }
         }
+
+        // Reset the scene
+        if(Input.GetKeyDown(KeyCode.R))
+        {
+            //Reload the current scene
+            Scene scene = SceneManager.GetActiveScene();
+            SceneManager.LoadScene(scene.name);
+        }
+        
     }
 }
